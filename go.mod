@@ -1,5 +1,7 @@
 module github.com/drone-plugins/drone-s3-cache
 
+go 1.14
+
 require (
 	github.com/drone/drone-cache-lib v0.0.0-20180416204029-5fc17dfa3c5b
 	github.com/dustin/go-humanize v1.0.0

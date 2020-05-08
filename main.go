@@ -1,8 +1,11 @@
 package main
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	pathutil "path"
 	"strconv"
@@ -46,6 +49,11 @@ func main() {
 			Name:   "fallback_path",
 			Usage:  "fallback_path",
 			EnvVar: "PLUGIN_FALLBACK_PATH",
+		},
+		cli.StringFlag{
+			Name:   "hash",
+			Usage:  "hash",
+			EnvVar: "PLUGIN_HASH",
 		},
 		cli.StringSliceFlag{
 			Name:   "mount",
@@ -244,6 +252,25 @@ func run(c *cli.Context) error {
 		)
 
 		flushPath = prefixRoot(root, flushPath)
+	}
+
+	// Hash the file to hash for keys
+	if hashPath := c.GlobalString("hash"); hashPath != "" {
+		file, err := os.Open(hashPath)
+		log.Info("No flush_path specified. Creating default")
+		if err != nil {
+			log.WithError(err).Fatalln("unable to open hash file")
+		}
+		defer file.Close()
+		md5Hash := md5.New()
+		if _, err := io.Copy(md5Hash, file); err != nil {
+			log.WithError(err).Fatalln("error hashing file contents")
+		}
+		hash := hex.EncodeToString(md5Hash.Sum(nil)[:16])
+
+		path = fmt.Sprintf("%s/%s", path, hash)
+		fallbackPath = fmt.Sprintf("%s/%s", fallbackPath, hash)
+		flushPath = fmt.Sprintf("%s/%s", flushPath, hash)
 	}
 
 	// Get the filename
