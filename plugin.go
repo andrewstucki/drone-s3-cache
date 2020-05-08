@@ -52,21 +52,21 @@ func (p *Plugin) Exec() error {
 
 	if p.Cacert != "" {
 		certPath := "/etc/ssl/certs/ca-certificates.crt"
-		log.Infof("Installing new ca certificate at %s", certPath)
+		log.Debugf("Installing new ca certificate at %s", certPath)
 		err := installCaCert(certPath, p.Cacert)
 
 		if err == nil {
-			log.Info("Successfully installed new certificate")
+			log.Debug("Successfully installed new certificate")
 		}
 	}
 
 	if p.CacertPath != "" {
 		certPath := "/etc/ssl/certs/ca-certificates.crt"
-		log.Infof("Installing new ca certificate at %s", certPath)
+		log.Debugf("Installing new ca certificate at %s", certPath)
 		err := installCaCertFromPath(certPath, p.CacertPath)
 
 		if err == nil {
-			log.Info("Successfully installed new certificate")
+			log.Debug("Successfully installed new certificate")
 		}
 	}
 
@@ -75,7 +75,7 @@ func (p *Plugin) Exec() error {
 		err = c.Rebuild(p.Mount, path)
 
 		if err == nil {
-			log.Infof("Cache rebuilt")
+			log.Info("Cache rebuilt")
 		}
 	}
 

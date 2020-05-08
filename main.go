@@ -209,7 +209,7 @@ func run(c *cli.Context) error {
 
 	// Defaults to <owner>/<repo>/<branch>/
 	if len(path) == 0 {
-		log.Info("No path specified. Creating default")
+		log.Debug("No path specified. Creating default")
 
 		path = fmt.Sprintf(
 			"%s/%s/%s",
@@ -226,7 +226,7 @@ func run(c *cli.Context) error {
 
 	// Defaults to <owner>/<repo>/master/
 	if len(fallbackPath) == 0 {
-		log.Info("No fallback_path specified. Creating default")
+		log.Debug("No fallback_path specified. Creating default")
 
 		fallbackPath = fmt.Sprintf(
 			"%s/%s/%s",
@@ -243,7 +243,7 @@ func run(c *cli.Context) error {
 
 	// Defaults to <owner>/<repo>/
 	if len(flushPath) == 0 {
-		log.Info("No flush_path specified. Creating default")
+		log.Debug("No flush_path specified. Creating default")
 
 		flushPath = fmt.Sprintf(
 			"%s/%s",
@@ -257,7 +257,7 @@ func run(c *cli.Context) error {
 	// Hash the file to hash for keys
 	if hashPath := c.GlobalString("hash"); hashPath != "" {
 		file, err := os.Open(hashPath)
-		log.Info("No flush_path specified. Creating default")
+		log.Debug("No flush_path specified. Creating default")
 		if err != nil {
 			log.WithError(err).Fatalln("unable to open hash file")
 		}
@@ -277,7 +277,7 @@ func run(c *cli.Context) error {
 	filename := c.GlobalString("filename")
 
 	if len(filename) == 0 {
-		log.Info("No filename specified. Creating default")
+		log.Debug("No filename specified. Creating default")
 
 		filename = "archive.tar"
 	}
